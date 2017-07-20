@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.onemoreerror.mygate.Activity.AddNewContactActivity">
+
+    <ImageView
+        android:id="@+id/add_new_contact_new_iv"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/z_margin_large"
+        android:background="@color/z_grey_unselected"
+        />
+    <LinearLayout
+        android:id="@+id/add_new_contact_add_name_layout"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/z_margin_large"
+        android:layout_marginTop="@dimen/z_margin_medium"
+        android:layout_below="@id/add_new_contact_new_iv"
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/add_new_contact_name_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name_string"
+            app:met_baseColor="#0056d3"
+            app:met_primaryColor="#982360"
+            app:met_errorColor="#ddaa00"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelText="@string/name_string"
+            app:met_minCharacters="5"
+            app:met_maxCharacters="15"
+            />
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/add_new_contact_number_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="@string/num_string"
+            app:met_baseColor="#0056d3"
+            app:met_primaryColor="#982360"
+            app:met_errorColor="#ddaa00"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelText="@string/name_string"
+            app:met_minCharacters="5"
+            app:met_maxCharacters="15"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/add_new_save_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_string"
+        android:layout_below="@id/add_new_contact_add_name_layout"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimary"
+        android:layout_marginTop="@dimen/z_margin_small"
+        />
+
+
+
+
+
+</RelativeLayout>

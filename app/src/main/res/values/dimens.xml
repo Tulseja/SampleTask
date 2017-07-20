@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--margins-->
+    <dimen name="z_margin_supermini">2dp</dimen>
+    <dimen name="z_margin_mini">4dp</dimen>
+    <dimen name="z_margin_6dp">6dp</dimen>
+    <dimen name="z_margin_small">8dp</dimen>
+    <dimen name="z_margin_medium">12dp</dimen>
+    <dimen name="z_margin_large">16dp</dimen>
+    <dimen name="z_margin_xlarge">25dp</dimen>
+    <dimen name="z_margin_xxlarge">30dp</dimen>
+
+    <!--fonts-->
+    <dimen name="z_font_xxmini">4sp</dimen>
+    <dimen name="z_font_super_supermini">8sp</dimen>
+    <dimen name="z_font_supermini">12sp</dimen>
+    <dimen name="z_font_mini">14sp</dimen>
+    <dimen name="z_font_small">16sp</dimen>
+    <dimen name="z_font_medium">18sp</dimen>
+    <dimen name="z_font_large">20sp</dimen>
+
+</resources>

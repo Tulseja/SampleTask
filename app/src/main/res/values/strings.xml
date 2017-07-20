@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SampleTask</string>
+    <string name="name_string">Name</string>
+    <string name="num_string">Number</string>
+    <string name="save_string">Save</string>
+    <string name="phone_string">Phone</string>
+    <string name="sample_num_string">+917042855330</string>
+    <string name="permission_required">Please Provide Permissions to proceed further.</string>
+</resources>
