@@ -50,8 +50,6 @@ public class AllContactsAdapter extends RecyclerView.Adapter<AllContactsAdapter.
         Contact contact = contactList.get(position);
 //        holder.ivContactImage.set
         holder.setData(contact);
-
-
     }
 
     @Override
@@ -59,7 +57,7 @@ public class AllContactsAdapter extends RecyclerView.Adapter<AllContactsAdapter.
         return contactList.size();
     }
 
-    public static class ContactViewHolder extends RecyclerView.ViewHolder{
+    public class ContactViewHolder extends RecyclerView.ViewHolder{
         ImageView ivContactImage;
         TextView tvContactName;
         TextView tvPhoneNumber;
@@ -71,7 +69,11 @@ public class AllContactsAdapter extends RecyclerView.Adapter<AllContactsAdapter.
             if(contactData != null) {
                 Log.e("AK", "Edit Contact");
                 proceedToUpdateContact(contactData);
+                AllContactsAdapter.this.notifyDataSetChanged();
+            } else {
+                Log.e("AK","Contact data is null");
             }
+
         }
 
         public ContactViewHolder(View itemView) {
@@ -80,6 +82,7 @@ public class AllContactsAdapter extends RecyclerView.Adapter<AllContactsAdapter.
             tvContactName = (TextView) itemView.findViewById(R.id.contact_name_tv);
             tvPhoneNumber = (TextView) itemView.findViewById(R.id.phone_number_tv);
             ivEditable =  (ImageView)itemView.findViewById(R.id.contact_edit_iv);
+            ButterKnife.bind(this,itemView);
         }
 
         public void setData(Contact data){

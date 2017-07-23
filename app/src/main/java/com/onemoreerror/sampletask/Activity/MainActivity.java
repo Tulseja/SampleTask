@@ -4,11 +4,18 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,12 +23,15 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.onemoreerror.sampletask.Adapter.AllContactsAdapter;
 import com.onemoreerror.sampletask.Constants.AppConstants;
 //import com.onemoreerror.sampletask.ContactsModel.ContactVO;
+import com.onemoreerror.sampletask.ImageUtilities.ImageUtils;
 import com.onemoreerror.sampletask.PermissionUtils.PermissionChecker;
+import com.onemoreerror.sampletask.PreferenceUtil.ZPreferences;
 import com.onemoreerror.sampletask.R;
 import com.onemoreerror.sampletask.application.AppApplication;
 import com.onemoreerror.sampletask.db.Contact;
@@ -39,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.main_all_contacts_rv)
     RecyclerView rvContacts;
-//    List<ContactVO> contactVOList ;
+
+    //    List<ContactVO> contactVOList ;
     List<Contact> contactList = new ArrayList<>();
     ProgressDialog pd;
     DaoSession daoSession;
@@ -54,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         daoSession = ((AppApplication) getApplication()).getDaoSession();
         contactDao = daoSession.getContactDao();
+
         getIsPermitted();
     }
 
@@ -67,44 +79,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getIsPermitted(){
-//        rxPermissions
-//                .request(Manifest.permission.READ_CONTACTS)
-//                .subscribe(granted -> {
-//                    if (granted) { // Always true pre-M
-//
-//                        new AsyncTask<Void, Void, Void>() {
-//
-//                            @Override
-//                            protected void onPreExecute()
-//                            {
-//                                pd = ProgressDialog.show(MainActivity.this,
-//                                        "Loading..", "Please Wait", true, false);
-//                            }// End of onPreExecute method
-//
-//                            @Override
-//                            protected Void doInBackground(Void... params)
-//                            {
-//                                    getAllContacts();
-//                                return null;
-//                            }// End of doInBackground method
-//
-//                            @Override
-//                            protected void onPostExecute(Void result)
-//                            {
-//                                pd.dismiss();
-//                                allContactsAdapter= new AllContactsAdapter(contactList, getApplicationContext());
-//                                rvContacts.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-//                                rvContacts.setAdapter(allContactsAdapter);
-//                                allContactsAdapter.notifyDataSetChanged();
-//
-//                            }//End of onPostExecute method
-//                        }.execute((Void[]) null);
-//                    } else {
-//                        Toast.makeText(MainActivity.this, R.string.permission_required, Toast.LENGTH_LONG);
-//                    }
-//                });
         PermissionChecker.askForContactPermission(this);
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void getAllContacts() {
 //        contactVOList = new ArrayList();
         Contact contact;
@@ -129,7 +106,16 @@ public class MainActivity extends AppCompatActivity {
                         String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 //                        contact.setContactNumber(phoneNumber);
                         contact.setNumber(phoneNumber);
-                        contact.setImage("");
+//                        Bitmap bt = ImageUtils.getInstant().getBitmapFromImageView(contactImage);
+                        BitmapDrawable drawable = (BitmapDrawable) getDrawable(R.drawable.icon_user_default);
+                        Bitmap bitmap = drawable.getBitmap();
+                        if(bitmap != null) {
+                            Uri sampleImageUri = ImageUtils.getInstant().getImageUri(this, bitmap);
+                            contact.setImage(sampleImageUri.toString().trim());
+                        }
+                        else {
+                            contact.setImage(null);
+                        }
                     }
                     phoneCursor.close();
                     Cursor emailCursor = contentResolver.query(
@@ -189,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         contactList.clear();
         //// Get the entity dao we need to work with.
         ContactDao contactDao = daoSession.getContactDao();
-        //// Load all items
+        //// Load all items.
         contactList.addAll(contactDao.loadAll());
         /// Notify our adapter of changes
         if(allContactsAdapter != null ) {
@@ -228,7 +214,11 @@ public class MainActivity extends AppCompatActivity {
             }// End of onPreExecute method
             @Override
             protected Void doInBackground(Void... params) {
-                getAllContacts();
+                if(ZPreferences.isFirstLaunch(AppApplication.getInstance().getApplicationContext())) {
+                    final boolean readWritePermission = PermissionChecker.checkReadWriteStoragePermission(MainActivity.this);
+                    getAllContacts();
+                    ZPreferences.setIsFirstLaunch(AppApplication.getInstance().getApplicationContext(), false);
+                }
                 return null;
             }// End of doInBackground method
             @Override

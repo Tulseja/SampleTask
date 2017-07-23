@@ -81,7 +81,7 @@ public class AddNewContactActivity extends AppCompatActivity {
             contactNumber.setText(String.valueOf(contact.getNumber()));
             Bitmap bitmap = null ;
 //            Log.e("AK",""+data.getContactImage());
-            Uri capturedImageUri = Uri.parse(contact.getImage());
+            capturedImageUri = Uri.parse(contact.getImage());
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(addImage.getContext().getContentResolver(),capturedImageUri);
             } catch (IOException e) {
@@ -139,7 +139,7 @@ public class AddNewContactActivity extends AppCompatActivity {
 
     }
     public void setUpDialogForCamera() {
-        final CharSequence[] items = {"Take Photo", "Choose Photo From Library", "Cancel"};
+        final CharSequence[] items = {"Take Photo", "Cancel"};
         //check Read Write Permission
         final boolean readWritePermission = PermissionChecker.checkReadWriteStoragePermission(AddNewContactActivity.this);
         AlertDialog.Builder builder = new AlertDialog.Builder(AddNewContactActivity.this);
@@ -151,10 +151,11 @@ public class AddNewContactActivity extends AppCompatActivity {
                 if (items[item].equals("Take Photo")) {
                     if (result && readWritePermission)
                         cameraIntent();
-                } else if (items[item].equals("Choose Photo From Library")) {
-                    if (result && readWritePermission)
-                        galleryIntent();
-                } else if (items[item].equals("Cancel")) {
+                }
+//                } else if (items[item].equals("Choose Photo From Library")) {
+//                    if (result && readWritePermission)
+//                        galleryIntent();
+                 else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
@@ -240,10 +241,10 @@ public class AddNewContactActivity extends AppCompatActivity {
         contact.setName(contactName.getText().toString());
         contact.setNumber(contactNumber.getText().toString());
         if(capturedImageUri != null){
-            contact.setImage(capturedImageUri.toString());
+            contact.setImage(capturedImageUri.toString().trim());
         }
         else {
-            contact.setImage("null");
+            contact.setImage(null);
         }
         contactDao.insert(contact);
         Toast.makeText(this, "Contact inserted", Toast.LENGTH_SHORT).show();
@@ -254,8 +255,14 @@ public class AddNewContactActivity extends AppCompatActivity {
         contact.setId(id);
         contact.setName(contactName.getText().toString());
         contact.setNumber(contactNumber.getText().toString());
+        if(capturedImageUri != null){
+            contact.setImage(capturedImageUri.toString().trim());
+        } else {
+            contact.setImage(null);
+        }
         contactDao.saveInTx(contact);
         Toast.makeText(this, "Contact updated", Toast.LENGTH_SHORT).show();
+
         finish();
     }
 }

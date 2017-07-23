@@ -1,12 +1,17 @@
 package com.onemoreerror.sampletask.ImageUtilities;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.ImageView;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -118,6 +123,21 @@ public class ImageUtils {
 //        Log.e("Compressed dimensions", decoded.getWidth()+" "+decoded.getHeight());
 
         return decoded ;
+    }
+    public Bitmap getBitmapFromImageView(ImageView iv){
+        BitmapDrawable drawable = (BitmapDrawable) iv.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        if(bitmap != null){
+            return bitmap;
+        }
+        return null;
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {

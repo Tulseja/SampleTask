@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="#dddddd">
+    android:layout_marginTop="@dimen/z_margin_mini" >
 
     <LinearLayout
         android:id="@+id/image_contact_layout"
