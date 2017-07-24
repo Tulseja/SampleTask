@@ -244,7 +244,10 @@ public class AddNewContactActivity extends AppCompatActivity {
             contact.setImage(capturedImageUri.toString().trim());
         }
         else {
-            contact.setImage(null);
+            //Setting it to Default image.
+            Bitmap bt = ImageUtils.getInstant().getBitmapFromImageView(addImage);
+            capturedImageUri = ImageUtils.getInstant().getImageUri(this,bt);
+            contact.setImage(capturedImageUri.toString().trim());
         }
         contactDao.insert(contact);
         Toast.makeText(this, "Contact inserted", Toast.LENGTH_SHORT).show();

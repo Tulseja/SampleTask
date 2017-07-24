@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.onemoreerror.mygate.Activity.AddNewContactActivity">
+    tools:context="com.onemoreerror.sampletask.Activity.AddNewContactActivity">
 
     <ImageView
         android:id="@+id/add_new_contact_new_iv"
