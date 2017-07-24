@@ -109,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
 //                        Bitmap bt = ImageUtils.getInstant().getBitmapFromImageView(contactImage);
                         BitmapDrawable drawable = (BitmapDrawable) getDrawable(R.drawable.icon_user_default);
                         Bitmap bitmap = drawable.getBitmap();
+                        if(!PermissionChecker.checkStoragePermission(this)) {
+                            PermissionChecker.requestStoragePermission(this);
+                        }
                         if(bitmap != null) {
                             Uri sampleImageUri = ImageUtils.getInstant().getImageUri(this, bitmap);
                             contact.setImage(sampleImageUri.toString().trim());

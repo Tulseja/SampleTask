@@ -17,6 +17,8 @@ public class AppConstants {
         int REQUEST_MANAGE_DOC = 12345 ;
 
         int REQUEST_CONTACT_TAG = 4567 ;
+
+        int REQUEST_STORAGE_PERMISSION = 333 ;
     }
 
     public interface DATA_PASSING_TAGS {

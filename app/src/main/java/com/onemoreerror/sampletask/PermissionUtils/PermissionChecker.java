@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.onemoreerror.sampletask.Constants.AppConstants;
+import com.onemoreerror.sampletask.db.Contact;
 
 import static android.support.v4.app.ActivityCompat.requestPermissions;
 import static com.onemoreerror.sampletask.Constants.AppConstants.REQUEST_TAGS.REQUEST_CONTACT_TAG;
@@ -69,12 +70,20 @@ public class PermissionChecker {
             return  true ;
         }
     }
+    public static boolean checkStoragePermission(Context context) {
+        return ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static void requestStoragePermission(Activity activity) {
+        ActivityCompat.requestPermissions(activity,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                AppConstants.REQUEST_TAGS.REQUEST_STORAGE_PERMISSION);
+    }
 
     public static void askForContactPermission(final Activity activity){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(activity,Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-
-                // Should we show an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                         Manifest.permission.READ_CONTACTS)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
